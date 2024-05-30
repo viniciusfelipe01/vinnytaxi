@@ -1,25 +1,26 @@
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
-:root{
+:root {
   --text-color: white;
   --bg-url: url(./assets/bg-mobile.jpg);
   --stroke-color: rgba(255, 255, 255, 0.5);
   --surface-color: rgba(255, 255, 255, 0.1);
   --surface-color-hover: rgba(255, 255, 255, 0.5);
   --highlight-color: rgba(255, 255, 255, 0.2);
-  --switch-bg-url: url(./assets/MoonStars.svg)
+  --switch-bg-url: url(./assets/MoonStars.svg);
 }
 .light {
   --text-color: black;
   --bg-url: url(./assets/bg-mobile-light.jpg);
   --stroke-color: rgba(0, 0, 0, 0.5);
-  --surface-color: rgba(0, 0, 0, .05);
+  --surface-color: rgba(0, 0, 0, 0.05);
   --surface-color-hover: rgba(0, 0, 0, 0.05);
   --highlight-color: rgba(0, 0, 0, 0.1);
-  --switch-bg-url: url(./assets/Sun.svg)
+  --switch-bg-url: url(./assets/Sun.svg);
 }
 
 body {
@@ -45,7 +46,7 @@ body * {
   margin: 56px auto 0px;
   padding: 0 24px;
 }
- /*profile*/
+/*profile*/
 #profile {
   text-align: center;
   padding: 24px;
@@ -68,7 +69,7 @@ body * {
 
   margin: 4px auto; /*margin: Y X; */
 }
-#switch button{
+#switch button {
   width: 32px;
   height: 32px;
   background: white var(--switch-bg-url) no-repeat center;
@@ -83,12 +84,12 @@ body * {
   transform: translateY(-50%);
 }
 
-.light #switch button{
+.light #switch button {
   right: 0;
   left: initial;
 }
 
-#switch span{
+#switch span {
   display: block;
   width: 64px;
   height: 24px;
@@ -116,7 +117,7 @@ ul li a {
   justify-content: center;
 
   padding: 16px 24px;
-  
+
   background: var(--surface-color);
   border: 1px solid var(--stroke-color);
   border-radius: 8px;
