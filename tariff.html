@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Taxi Fare Calculator - Vinny Taxi</a></title>
+  
+  <link rel="tariffpage" href="./index.html">
+  
+  <style>
+    
+    input { margin: 5px; padding: 5px; }
+    button { padding: 6px 12px; cursor: pointer; margin-top: 5px; }
+    fieldset { margin-bottom: 15px; }
+    #resultado { margin-top: 20px; font-weight: bold; white-space: pre-line; }
+  </style>
+</head>
+<body>
+  <h2>Taxi Fare Calculator - <a href="https://vinnytaxi.co.uk/" target="_blank">Vinny Taxi</a></h2>
+  <h4>- Please note that the values presented are approximate and may not be exact. <br><br>
+     - The fare does not include any waiting time. <br><br>
+
+- The price is based on Appendix A of the document <b><a href="https://edemocracy.northyorks.gov.uk/documents/s32155/07%20-%20Review%20of%20Maximum%20Hackney%20Carriage%20Fares.pdf#page=5" target="_blank">"Review of Maximum Hackney Carriage Fares"</a></b>, dated 18 June 2024.<br><br>
+
+The distance is calculated using data provided by an external API. <br><br>
+To obtain an exact distance in miles, please manually verify the route you intend to travel and select the <b>"Enter distance manually" option.</b></h4>
+
+  <fieldset>
+    <legend>Choose the distance calculation method</legend>
+    <label>
+      <input type="radio" name="modo" value="auto" onclick="ativarAuto()"> Automatically calculate (postcodes)
+    </label><br>
+    <label>
+      <input type="radio" name="modo" value="manual" onclick="ativarManual()"> Enter distance manually.
+    </label>
+  </fieldset>
+
+  <!-- Distância automática -->
+  <div id="autoSection" style="display:none;">
+    <label>Pick up - Postcode: <input type="text" id="origem"></label><br>
+    <label>Drop off - Postcode: <input type="text" id="destino"></label><br>
+    <button onclick="calcularDistancia()">Calculate the distance and the fare.</button>
+  </div>
+
+  <!-- Distância manual -->
+  <div id="manualSection" style="display:none;">
+    <label>Miles distance: <input type="number" id="distManual" step="0.01"></label><br>
+    <button onclick="calcularManual()">Calculate the fare</button>
+  </div>
+
+  <button onclick="clearPage()">Clear Page</button>
+
+  <div id="resultado"></div>
+
+  <script>
+    function ativarAuto() {
+      document.getElementById("autoSection").style.display = "block";
+      document.getElementById("manualSection").style.display = "none";
+    }
+
+    function ativarManual() {
+      document.getElementById("manualSection").style.display = "block";
+      document.getElementById("autoSection").style.display = "none";
+    }
+
+    function clearPage() {
+      document.querySelectorAll("input").forEach(el => el.value = "");
+      document.getElementById("resultado").textContent = "";
+      document.querySelectorAll("input[name='modo']").forEach(el => el.checked = false);
+      document.getElementById("autoSection").style.display = "none";
+      document.getElementById("manualSection").style.display = "none";
+    }
+
+    // Buscar lat/long via Postcodes.io
+    async function getCoords(postcode) {
+      const url = `https://api.postcodes.io/postcodes/${postcode}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      if (data.status === 200) {
+        return { lat: data.result.latitude, lon: data.result.longitude };
+      } else {
+        throw new Error("Invalid postcode: " + postcode);
+      }
+    }
+
+    // Calcular distância via OSRM
+    async function calcularDistancia() {
+      const origem = document.getElementById("origem").value.trim();
+      const destino = document.getElementById("destino").value.trim();
+      const resultado = document.getElementById("resultado");
+
+      try {
+        const coordsOrigem = await getCoords(origem);
+        const coordsDestino = await getCoords(destino);
+
+        const url = `https://router.project-osrm.org/route/v1/driving/${coordsOrigem.lon},${coordsOrigem.lat};${coordsDestino.lon},${coordsDestino.lat}?overview=false`;
+
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.code === "Ok") {
+          const distanciaMetros = data.routes[0].distance;
+          const distanciaMilhas = distanciaMetros / 1609.34;
+          calcularTarifas(distanciaMilhas);
+        } else {
+          resultado.textContent = "Unable to calculate the route. Please try again.";
+        }
+
+      } catch (error) {
+        resultado.textContent = error.message;
+      }
+    }
+
+    // Calcular tarifa manual
+    function calcularManual() {
+      const dist = parseFloat(document.getElementById("distManual").value);
+      if (!dist || dist <= 0) {
+        document.getElementById("resultado").textContent = "Digite uma distância válida.";
+        return;
+      }
+      calcularTarifas(dist);
+    }
+
+    // Fórmula de cálculo
+    function calcularTarifas(distMilhas) {
+      const resultado = document.getElementById("resultado");
+
+      function calcular(flagFall, drop, dist) {
+        const totalYards = dist * 1760;
+        if (totalYards <= 440) return flagFall;
+        const extra = Math.ceil((totalYards - 440) / 167.62);
+        return flagFall + extra * drop;
+      }
+
+      const tarifa1 = calcular(4.00, 0.20, distMilhas);
+      const tarifa2 = calcular(6.00, 0.30, distMilhas);
+      const tarifa3 = calcular(8.00, 0.40, distMilhas);
+
+      resultado.textContent = 
+        `Distance used: ${distMilhas.toFixed(2)} milhas\n\n` +
+        `Tariff 1 (6am - 11pm): £${tarifa1.toFixed(2)}\n\n` +
+        `Tariff 2 (11pm - 6am & Public holidays*): £${tarifa2.toFixed(2)}\n*All public holidays other than those listed in tariff 3, tariff 2 applies throughout the 24-hour period.\n\n` +
+        `Tariff 3 (Christmas & New Year**): £${tarifa3.toFixed(2)}\n**From 18:00 24th Dec to 06:00 27th Dec and 18:00 31st Dec to 06:00 2nd Jan.`;
+    }
+  </script>
+  <footer>
+        © 2025 VinnyTaxi - All rights reserved.
+        <div>
+          <a class="NYC" target="_blank" style="text-decoration: none">
+            Licensed taxi in North Yorkshire Council.
+          </a>
+        </div>
+      </footer>
+</body>
+</html>
