@@ -5,51 +5,53 @@
   <title>Taxi Fare Calculator - Vinny Taxi</a></title>
   
   <link rel="tariffpage" href="./index.html">
+  <link rel="stylesheet" href="./tarifftStyle.css">
   
-  <style>
-    
-    input { margin: 5px; padding: 5px; }
-    button { padding: 6px 12px; cursor: pointer; margin-top: 5px; }
-    fieldset { margin-bottom: 15px; }
-    #resultado { margin-top: 20px; font-weight: bold; white-space: pre-line; }
-  </style>
 </head>
-<body>
-  <h2>Taxi Fare Calculator - <a href="https://vinnytaxi.co.uk/" target="_blank">Vinny Taxi</a></h2>
-  <h4>- Please note that the values presented are approximate and may not be exact. <br><br>
-     - The fare does not include any waiting time. <br><br>
 
-- The price is based on Appendix A of the document <b><a href="https://edemocracy.northyorks.gov.uk/documents/s32155/07%20-%20Review%20of%20Maximum%20Hackney%20Carriage%20Fares.pdf#page=5" target="_blank">"Review of Maximum Hackney Carriage Fares"</a></b>, dated 18 June 2024.<br><br>
+<header>
+  <h2 id="titulo">Taxi Fare Calculator - <a class="destaque" href="https://vinnytaxi.co.uk/" target="_blank">Vinny Taxi</a></h2>
+</header>
 
-The distance is calculated using data provided by an external API. <br><br>
-To obtain an exact distance in miles, please manually verify the route you intend to travel and select the <b>"Enter distance manually" option.</b></h4>
+<body id="body">
+  <section id="topics">
+    <p>- Please note that the values presented <span class="destaque">are approximate and may not be exact.</span></p>
+    <p>- The fare does not include any waiting time.
+    <p>- The price is based on Appendix A of the document <a class="destaque" href="https://edemocracy.northyorks.gov.uk/documents/s32155/07%20-%20Review%20of%20Maximum%20Hackney%20Carriage%20Fares.pdf#page=5" target="_blank" >"Review of Maximum Hackney Carriage Fares"</a>, dated 18 June 2024.</p>
+    <p>- The distance is calculated using data provided by an external API. </p>
+    <p>- To obtain an exact distance in miles, please manually verify the route you intend to travel and select the "Enter distance manually" option.</p>
+  </section>
 
-  <fieldset>
-    <legend>Choose the distance calculation method</legend>
-    <label>
-      <input type="radio" name="modo" value="auto" onclick="ativarAuto()"> Automatically calculate (postcodes)
-    </label><br>
-    <label>
-      <input type="radio" name="modo" value="manual" onclick="ativarManual()"> Enter distance manually.
-    </label>
-  </fieldset>
+  <section>
+    <fieldset id="calc">
+      <legend class="destaque">Choose the distance calculation method:</legend>
+      <label>
+        <input type="radio" name="modo" value="auto" onclick="ativarAuto()"> Automatically calculate (by postcodes)
+      </label><br>
+      <label>
+        <input type="radio" name="modo" value="manual" onclick="ativarManual()"> Enter distance manually.
+      </label>
+    </fieldset>
+  
 
-  <!-- Distância automática -->
-  <div id="autoSection" style="display:none;">
-    <label>Pick up - Postcode: <input type="text" id="origem"></label><br>
-    <label>Drop off - Postcode: <input type="text" id="destino"></label><br>
-    <button onclick="calcularDistancia()">Calculate the distance and the fare.</button>
-  </div>
+    <!-- Distância automática -->
+    <div id="autoSection" style="display:none;">
+      <label>Pick up - Postcode: <input type="text" id="origem"></label><br>
+      <label>Drop off - Postcode: <input type="text" id="destino"></label><br>
+      <button onclick="calcularDistancia()">Calculate the distance and the fare.</button>
+    </div>
 
-  <!-- Distância manual -->
-  <div id="manualSection" style="display:none;">
-    <label>Miles distance: <input type="number" id="distManual" step="0.01"></label><br>
-    <button onclick="calcularManual()">Calculate the fare</button>
-  </div>
+    <!-- Distância manual -->
+    <div id="manualSection" style="display:none;">
+      <label>Miles distance: <input type="number" id="distManual" step="0.01"></label><br>
+      <button onclick="calcularManual()">Calculate the fare</button>
+    </div>
 
-  <button onclick="clearPage()">Clear Page</button>
+    <button onclick="clearPage()">Clear Page</button>
 
-  <div id="resultado"></div>
+    <div id="resultado"></div>
+
+  </section>
 
   <script>
     function ativarAuto() {
@@ -146,7 +148,7 @@ To obtain an exact distance in miles, please manually verify the route you inten
         © 2025 VinnyTaxi - All rights reserved.
         <div>
           <a class="NYC" target="_blank" style="text-decoration: none">
-            Licensed taxi in North Yorkshire Council.
+            Taxi licensed in North Yorkshire Council.
           </a>
         </div>
       </footer>

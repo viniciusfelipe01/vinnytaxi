@@ -1,0 +1,94 @@
+/* Mantém o mesmo tema global da home */
+:root {
+  --input-bg: rgba(255, 255, 255, 0.1);
+  --button-bg: rgba(255, 255, 255, 0.1);
+  --button-bg-hover: rgba(255, 255, 255, 0.3);
+}
+
+.light {
+  --input-bg: rgba(0, 0, 0, 0.05);
+  --button-bg: rgba(0, 0, 0, 0.05);
+  --button-bg-hover: rgba(0, 0, 0, 0.15);
+}
+
+body {
+  background: var(--bg-url) no-repeat top center/cover;
+  font-family: "Inter", sans-serif;
+  color: var(--text-color);
+  min-height: 100vh;
+}
+
+#tariff-container {
+  background: var(--surface-color);
+  border: 1px solid var(--stroke-color);
+  border-radius: 12px;
+  padding: 24px;
+  margin-top: 24px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#topics p {
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.destaque {
+  font-weight: bold;
+  text-decoration: none;
+  color: var(--text-color);
+}
+
+fieldset {
+  border: 1px solid var(--stroke-color);
+  border-radius: 8px;
+  padding: 12px;
+  margin-top: 20px;
+  background: var(--surface-color);
+}
+
+.botao {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--button-bg);
+  border: 1px solid var(--stroke-color);
+  border-radius: 8px;
+  color: var(--text-color);
+  padding: 10px 16px;
+  margin-top: 10px;
+  cursor: pointer;
+  font-weight: 500;
+  text-transform: uppercase;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.botao:hover {
+  background: var(--button-bg-hover);
+  transform: scale(1.05);
+}
+
+input {
+  background: var(--input-bg);
+  border: 1px solid var(--stroke-color);
+  border-radius: 4px;
+  padding: 6px;
+  color: var(--text-color);
+}
+
+#resultado {
+  margin-top: 24px;
+  font-weight: bold;
+  white-space: pre-line;
+}
+
+footer {
+  margin-top: 40px;
+  text-align: center;
+  font-size: 14px;
+}
